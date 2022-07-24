@@ -39,6 +39,7 @@
     "d3": "7",
     "lotivis-chart": "1",
     "lotivis-colors": "1",
-    "lotivis-datasets": "1"
+    "lotivis-datasets": "1",
+    "lotivis-geojson": "1"
   }
 }

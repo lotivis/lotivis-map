@@ -2,24 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
-    />
-
-    <link rel="stylesheet" href="./examples.css" />
-    <title>Lotivis - Map Chart Berlin</title>
+    <title>Map Chart</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .ltv-container {
+        max-width: 1000px;
+        margin: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <div class="ltv-container">
-      <h1>MapChart Berlin</h1>
+      <h1>Map Chart</h1>
       <div id="map-chart">
         <!-- Map Chart Here -->
       </div>
     </div>
 
-    <script src="../node_modules/lotivis/dist/lotivis.js"></script>
-
+    <script src="../dist/lotivis-map.js"></script>
     <script>
       // print debug messages
       lotivis.debug(true);

@@ -1,16 +1,12 @@
 import * as d3 from "d3";
-import { baseChart } from "./baseChart.js";
-import { config, debug } from "../../lotivis-charts/src/common/config.js";
-import { uniqueId } from "../../lotivis-charts/src/common/identifiers.js";
-import { tooltip } from "./tooltip.js";
-import { DEFAULT_NUMBER_FORMAT } from "../../lotivis-charts/src/common/formats.js";
-import { cut, postfix } from "../../lotivis-charts/src/common/helpers.js";
+import { chart as baseChart, config, debug, tooltip } from "lotivis-chart";
 import { Events, DataController } from "lotivis-data";
+
 import {
   geojsonGenerate,
-  featuresJoin,
-  featuresRemove,
-  featuresFilter,
+  geojsonJoin,
+  geojsonRemove,
+  geojsonFilter,
   geojsonAutoFeatureIDAccessor,
   geojsonAutoFeatureNameAccessor,
 } from "lotivis-geojson";
@@ -19,8 +15,21 @@ import {
   colorScale2,
   colorSchemeDefault,
   ColorsGenerator,
-} from "../../lotivis-charts/src/common/colors.js";
-import { copy } from "../../lotivis-charts/src/common/values.js";
+} from "lotivis-colors";
+
+function copy(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+function postfix(src, post) {
+  return (src = "" + src), src.endsWith(post || "") ? src : src + post;
+}
+
+function cut(src, max) {
+  return ((src = "" + src), src.length <= max)
+    ? src
+    : postfix(src.substring(0, max), "...");
+}
 
 /**
  * Reusable Map Chart API class that renders a
@@ -38,7 +47,7 @@ import { copy } from "../../lotivis-charts/src/common/values.js";
  */
 export function map() {
   let attr = {
-    id: uniqueId("map"),
+    id: "map-" + new Date().getTime(),
 
     width: 1000,
     height: 1000,
@@ -88,7 +97,7 @@ export function map() {
     group: null,
 
     // the number format
-    numberFormat: DEFAULT_NUMBER_FORMAT,
+    numberFormat: config.numberFormat,
 
     featureIDAccessor: geojsonAutoFeatureIDAccessor,
 
@@ -122,7 +131,7 @@ export function map() {
 
     // exclude features
     if (Array.isArray(attr.exclude) && attr.exclude.length > 0) {
-      attr.workGeoJSON = featuresRemove(
+      attr.workGeoJSON = geojsonRemove(
         attr.workGeoJSON,
         attr.exclude,
         attr.featureIDAccessor
@@ -131,7 +140,7 @@ export function map() {
 
     // only use included features
     if (Array.isArray(attr.include) && attr.include.length > 0) {
-      attr.workGeoJSON = featuresFilter(
+      attr.workGeoJSON = geojsonFilter(
         attr.workGeoJSON,
         attr.include,
         attr.featureIDAccessor
@@ -279,7 +288,7 @@ export function map() {
       .attr("width", attr.width)
       .attr("height", attr.height)
       .on("click", () => {
-        attr.dataController.clear("locations", chart);
+        attr.dataController.clearFilters(chart, "locations");
         renderSelection(calc, dv);
       });
   }
@@ -288,7 +297,7 @@ export function map() {
     let geoJSON = attr.workGeoJSON;
     if (!geoJSON) return console.log("[ltv]  No GeoJSON to render");
 
-    let bordersGeoJSON = featuresJoin(geoJSON.features);
+    let bordersGeoJSON = geojsonJoin(geoJSON.features);
     if (!bordersGeoJSON) return console.log("[ltv]  No borders to render.");
 
     calc.borders = calc.svg
@@ -414,7 +423,7 @@ export function map() {
 
   function renderSelection(calc, dv) {
     calc.selectedFeatures = getSelectedFeatures();
-    calc.selectionBorderGeoJSON = featuresJoin(calc.selectedFeatures);
+    calc.selectionBorderGeoJSON = geojsonJoin(calc.selectedFeatures);
 
     if (!calc.selectionBorderGeoJSON)
       return debug("no features selected", chart.id());
@@ -534,9 +543,9 @@ export function map() {
       .attr("checked", (group) => (group == selectedGroup ? true : null))
       .on("change", (event, group) => {
         if (selectedGroup == group) return;
-        Events.call("map-selection-will-change", chart, group);
+        // Events.call("map-selection-will-change", chart, group);
         attr.selectedGroup = group;
-        Events.call("map-selection-did-change", chart, group);
+        // Events.call("map-selection-did-change", chart, group);
         chart.run();
       });
 
