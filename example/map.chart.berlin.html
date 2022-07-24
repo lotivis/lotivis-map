@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" href="./examples.css" />
+    <title>Lotivis - Map Chart Berlin</title>
+  </head>
+  <body>
+    <div class="ltv-container">
+      <h1>MapChart Berlin</h1>
+      <div id="map-chart">
+        <!-- Map Chart Here -->
+      </div>
+    </div>
+
+    <script src="../node_modules/lotivis/dist/lotivis.js"></script>
+
+    <script>
+      // print debug messages
+      lotivis.debug(true);
+
+      let chart = lotivis
+        .map()
+        .selector("#map-chart")
+        .featureIDAccessor((f) => f.properties.cartodb_id);
+
+      fetch("./assets/berlin.geojson")
+        .then((raw) => raw.json())
+        .then((geoJSON) => chart.geoJSON(geoJSON).run());
+    </script>
+  </body>
+</html>

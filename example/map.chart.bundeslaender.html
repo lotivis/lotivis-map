@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" href="./examples.css" />
+    <title>Lotivis - Map Simple</title>
+  </head>
+  <body>
+    <div class="ltv-container">
+      <h1>MapChart - Bundesländer</h1>
+      <div id="map-chart"></div>
+    </div>
+
+    <script src="../node_modules/lotivis/dist/lotivis.js"></script>
+
+    <script>
+      // print debug messages
+      lotivis.debug(true);
+
+      let chart = lotivis
+        .map()
+        .selector("#map-chart")
+        .featureNameAccessor((f) => f.properties["NAME_3"])
+        .featureIDAccessor((f) => f.properties["ID_3"]);
+
+      fetch("./assets/germany.geojson")
+        .then((raw) => raw.json())
+        .then((geoJSON) => chart.geoJSON(geoJSON).run());
+    </script>
+  </body>
+</html>

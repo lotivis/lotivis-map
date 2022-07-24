@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" href="./examples.css" />
+    <title>MapChart Departements</title>
+  </head>
+  <body>
+    <div class="ltv-container">
+      <!-- <a href="../index.html"> Back </a> -->
+      <h1>Map Data</h1>
+      <label>Data:</label>
+      <select id="data" onchange="dataChange()">
+        <option>Artists</option>
+        <option>Tracks</option>
+        <option>Words</option>
+        <option>Words (Relative)</option>
+        <option>Types</option>
+        <option>Types (Relative)</option>
+      </select>
+      <div id="map-chart">
+        <!-- Map Chart Here -->
+      </div>
+      <div id="map-chart-metropole" style="width: 400px">
+        <!-- Map Chart Here -->
+      </div>
+    </div>
+
+    <script src="../node_modules/lotivis/dist/lotivis.js"></script>
+
+    <script>
+      // print debug messages
+      lotivis.debug(true);
+
+      let datasets = [];
+      let chart = lotivis
+        .map()
+        .selector("#map-chart")
+        .labels(false)
+        .labelsExclude(["75", "92", "93", "94"])
+        .exclude(["2A", "2B"])
+        .colorScale(lotivis.colorScale1)
+        .featureIDAccessor((f) => f.properties.code)
+        .featureNameAccessor((f) => f.properties.nom);
+
+      let mapChartMetropole = lotivis
+        .map()
+        .selector("#map-chart-metropole")
+        .width(220)
+        .height(220)
+        .labels(true)
+        .legend(false)
+        .include(["75", "92", "93", "94"])
+        .featureIDAccessor((f) => f.properties.code)
+        .featureNameAccessor((f) => f.properties.nom);
+
+      function dataChange() {
+        setDataset(document.getElementById("data").selectedIndex);
+      }
+
+      function setDataset(index) {
+        let dataset = datasets[index];
+        let data = lotivis.datasetToData(dataset);
+        let dataController = lotivis.dataController(data);
+        chart.run(dataController);
+        mapChartMetropole.run(dataController);
+      }
+
+      Promise.all([
+        lotivis.fetchJSON("./assets/departements.to.artists.json"),
+        lotivis.fetchJSON("./assets/departements.to.tracks.json"),
+        lotivis.fetchJSON("./assets/departements.to.words.json"),
+        lotivis.fetchJSON("./assets/departements.to.words.relative.json"),
+        lotivis.fetchJSON("./assets/departements.to.types.json"),
+        lotivis.fetchJSON("./assets/departements.to.types.relative.json"),
+        lotivis.fetchJSON("./assets/departements.geojson"),
+      ]).then((all) => {
+        console.log("all", all);
+
+        let geoJSON = all.pop();
+        chart.geoJSON(geoJSON);
+        mapChartMetropole.geoJSON(geoJSON);
+        datasets = all;
+        setDataset(0);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+$radius: 8px;
+$padding: 8px;
+$tint-color: dodgerblue;
+$label-font-size: 12px;
+
+// More classes set by lotivis
+//
+// .ltv-map-svg
+// .ltv-map-svg-tooltip
+// .ltv-map-legend
+// .ltv-map-legend-title
+// .ltv-map-legend-text
+
+.ltv-map-background {
+  cursor: pointer;
+  fill: white;
+}
+
+.ltv-map-area {
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+.ltv-map-area-hover {
+  stroke: $tint-color;
+  stroke-width: 4;
+  stroke-dasharray: 0 !important;
+}
+
+.ltv-map-exterior-borders {
+  fill: clear;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 4;
+  stroke-opacity: 0.4;
+  pointer-events: none;
+}
+
+.ltv-map-label {
+  text-anchor: middle;
+  font-size: $label-font-size;
+  pointer-events: none;
+}
+
+.ltv-map-selection-border {
+  pointer-events: none;
+  fill: transparent;
+  fill-opacity: 0;
+  stroke: $tint-color;
+  stroke-width: 3px;
+  stroke-dasharray: 0;
+  pointer-events: none;
+}
+
+.ltv-map-legend-rect {
+  stroke: black;
+  stroke-width: 1;
+}

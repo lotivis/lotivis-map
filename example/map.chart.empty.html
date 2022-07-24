@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" href="./examples.css" />
+    <title>Lotivis - Map Empty</title>
+  </head>
+  <body>
+    <div class="ltv-container" style="width: 400px; text-align: center">
+      <h1>Map Empty</h1>
+      <div id="map-chart-1">
+        <!-- Map Chart Card 1 Here -->
+      </div>
+      <div id="map-chart-2">
+        <!-- Map Chart Card 2 Here -->
+      </div>
+      <div id="map-chart-3">
+        <!-- Map Chart Card 3 Here -->
+      </div>
+    </div>
+
+    <script src="../node_modules/lotivis/dist/lotivis.js"></script>
+
+    <script>
+      // print debug messages
+      lotivis.debug(true);
+
+      let data1 = [
+        {
+          label: "dataset1",
+          group: "dataset1",
+          data: [{ location: "location_0", value: 0 }],
+        },
+      ];
+
+      let data2 = [
+        {
+          label: "dataset1",
+          group: "dataset1",
+          data: [
+            { location: "location_0", value: 0 },
+            { location: "location_1", value: 1 },
+            { location: "location_2", value: 2 },
+          ],
+        },
+      ];
+
+      let data3 = [
+        {
+          label: "dataset1",
+          group: "dataset1",
+          data: [
+            { location: "location_0", value: 0 },
+            { location: "location_1", value: 1 },
+            { location: "location_2", value: 2 },
+            { location: "location_3", value: 3 },
+            { location: "location_4", value: 4 },
+            { location: "location_5", value: 5 },
+            { location: "location_6", value: 6 },
+            { location: "location_7", value: 7 },
+          ],
+        },
+      ];
+
+      lotivis
+        .map()
+        .selector("#map-chart-1")
+        .width(600)
+        .height(300)
+        .labels(true)
+        .dataController(lotivis.dataController(lotivis.datasetsToData(data1)))
+        .run();
+
+      lotivis
+        .map()
+        .selector("#map-chart-2")
+        .width(600)
+        .height(300)
+        .labels(true)
+        .dataController(lotivis.dataController(lotivis.datasetsToData(data2)))
+        .run();
+
+      lotivis
+        .map()
+        .selector("#map-chart-3")
+        .width(600)
+        .height(300)
+        .labels(true)
+        .dataController(lotivis.dataController(lotivis.datasetsToData(data3)))
+        .run();
+    </script>
+  </body>
+</html>
