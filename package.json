@@ -7,7 +7,8 @@
   "type": "module",
   "files": [
     "dist/**/*.js",
-    "src/**/*.js"
+    "src/**/*.js",
+    "src/**/*.scss"
   ],
   "module": "src/index.js",
   "main": "src/index.js",
@@ -20,10 +21,9 @@
   "scripts": {
     "build": "rollup --config",
     "build:watch": "rollup --config --watch",
-    "test": "mocha test/**/*-test.js",
-    "test:watch": "mocha test/**/*-test.js --watch",
     "serve": "http-server",
-    "serve:build:watch": "yarn build:watch & yarn serve"
+    "dev": "yarn build:watch & yarn serve",
+    "prepublishOnly": "rm -rf dist && yarn build"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "13",
